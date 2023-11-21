@@ -31,13 +31,13 @@ class EventsTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 # Test if a logged out user can access certain webpages
-class NewPostTest(LiveServerTestCase):
+class AccessTest(LiveServerTestCase):
     # Test with Chrome browser
     def setUp(self):
         self.browser = webdriver.Chrome()
 
     # Close browser after testing
-    def tearDown(self):
+    def closeDown(self):
         self.browser.quit()
 
     # Selenium test 1: Sign up page is accessible from logged out page
