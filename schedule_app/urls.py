@@ -13,4 +13,6 @@ urlpatterns = [
     path('planner/create_planner/', views.createPlanner, name='create_planner'),
     path('planner/<int:planner_id>/update_planner/', views.updatePlanner, name='update_planner'),
     path('planner/<int:planner_id>/delete_planner/', views.deletePlanner, name='delete_planner'),
+    path('register/', views.register, name='register'), 
 ]
+

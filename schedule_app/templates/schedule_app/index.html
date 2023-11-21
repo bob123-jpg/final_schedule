@@ -1,29 +1,201 @@
 <!-- inherit from base.html-->
 {% extends 'schedule_app/base_template.html' %}
+{% load static %}
+
 <!-- Replace block content in base_template.html -->
 {% block content %}
-<h1>Schedule Planner</h1>
-<a class="btn btn-primary" href="{% url 'create_planner' %}" role="button">Create an Event</a>
 
-<!--Buttons-->
-<ul class="list-group">
-    {% for i in planners %}
-    <li class="list-group-item">Schedule an Event: {{i.name}}
-        <p><strong>Date: {{ i.date }}</strong></p>
-        <a class="btn btn-dark" href="{{ i.get_absolute_url }}" role="button">View</a>
-        <a class="btn btn-dark" href="{% url 'update_planner' i.id %}" role="button">Edit</a>
-        <a class="btn btn-dark" href="{% url 'delete_planner' i.id %}" role="button">Remove</a>
-        {% load static %}
-{% load bootstrap5 %}
-{% bootstrap_css %}
+<style>  
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
 
-<style>
-    body {
-        background-image: url("{% static 'images/background.jpg' %}");
+    .calendar {
+        margin-right: 20px; 
+        background-color: #D3D3D3;
+        border-style: double;
+    }
+
+    .events {
+        margin-left: 100px;
+        width: 320px;
+        height: 500px;
+        border-style: double;
+        background-color: #D3D3D3;
+        overflow: scroll;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+        width: 150px;
+        height: 50px;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .event-btn {
+        padding: 10px 40px;
+        font-size: 12px; 
+        background-color: #ccc; 
+        border: 1px solid #999; 
+        color: #333; 
+        text-decoration: none;
+    }
+
+    li.list-group-item {
+        background-color: #D3D3D3;
+        border: 3px solid black;
+        width: 250px;
     }
 </style>
-    </li>
-    {% endfor %}
-</ul>
+
+<body>    
+    <!--Table to represent calendar-->
+    <div class = "container">
+        <div class = "calendar">
+            <head>
+                <h1>Calendar</h1>
+            </head>
+
+            <table>
+                <tr>
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                </tr>
+
+                <tr>
+                    <td>1</br></td>
+                    <td>2</br></td>
+                    <td>3</br></td>
+                    <td>4</br></td>
+                    <td>5</br></td>
+                    <td>6</br></td>
+                    <td>7</br></td>
+                </tr>
+            
+                <tr>
+                    <td>8</br></td>
+                    <td>9</br></td>
+                    <td>10</br></td>
+                    <td>11</br></td>
+                    <td>12</br></td>
+                    <td>13</br></td>
+                    <td>14</br></td>
+                </tr>
+
+                <tr>
+                    <td>15</br></td>
+                    <td>16</br></td>
+                    <td>17</br></td>
+                    <td>18</br></td>
+                    <td>19</br></td>
+                    <td>20</br></td>
+                    <td>21</br></td>
+                </tr>
+
+                <tr>
+                    <td>22</br></td>
+                    <td>23</br></td>
+                    <td>24</br></td>
+                    <td>25</br></td>
+                    <td>26</br></td>
+                    <td>27</br></td>
+                    <td>28</br></td>
+                </tr>
+
+                <tr>
+                    <td>29</br></td>
+                    <td>30</br></td>
+                    <td>31</br></td>
+                </tr>
+            </table>
+        </br>
+
+        <h3>Month: <span id = 'printMonth'></span></h3>
+        <script>
+            var date = new Date();
+            var month = date.getMonth();
+            var printMonth = '';
+
+            if (month == 1) {
+                printMonth = 'January';
+            }
+            else if (month == 2) {
+                printMonth = 'February';
+            }
+            else if (month == 3) {
+                printMonth = 'March';
+            }
+            else if (month == 4) {
+                printMonth = 'April';
+            }
+            else if (month == 5) {
+                printMonth = 'May';
+            }
+            else if (month == 6) {
+                printMonth = 'June';
+            }
+            else if (month == 7) {
+                printMonth = 'July';
+            }
+            else if (month == 8) {
+                printMonth = 'August';
+            }
+            else if (month == 9) {
+                printMonth = 'September';
+            }
+            else if (month == 10) {
+                printMonth = 'October';
+            }
+            else if (month == 11) {
+                printMonth = 'November';
+            }
+            else if (month == 12) {
+                printMonth = 'December';
+            }
+
+            document.getElementById('printMonth').innerHTML = printMonth;
+        </script>
+            
+        <h3>Year: <span id = 'year'></span></h3>
+            <script>
+                var date = new Date();
+                var year = date.getFullYear();
+                document.getElementById('year').innerHTML = year;
+            </script>
+        </div>
+
+        <!--List events-->
+        <div class = "events">
+            <head>
+                <h1>Events</h1>
+            </head>
+
+            <a class="btn btn-dark" href="{% url 'create_planner' %}" role="button">Create an Event</a></br></br>
+
+            <ul class="list-group">
+                {% for i in planners %}
+                <li class="list-group-item">Event: {{i.name}}
+                    <p><strong>Date: {{ i.date }}</strong></p>
+                    <a class="btn btn-dark" href="{{ i.get_absolute_url }}" role="button">View</a>
+                    <a class="btn btn-dark" href="{% url 'update_planner' i.id %}" role="button">Edit</a>
+                    <a class="btn btn-dark" href="{% url 'delete_planner' i.id %}" role="button">Remove</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</body>
 
 {% endblock %}

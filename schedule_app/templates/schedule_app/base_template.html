@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+ 
 <head>
 <title>Schedule Planner</title>
 <meta charset="utf-8" />
@@ -17,22 +18,26 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light lead">
-<img src="{% static 'images/work.jpg' %}" width = "150", height = "90"/>
-<div class="container-fluid">
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span></button>
-<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-<div class="navbar-nav">
-<a class="nav-link" href="{% url 'index' %}">Home</a>
-<a class="nav-link" href="{% url 'planners' %}">Events</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light lead">
+  <img src="{% static 'images/work.jpg' %}" width = "150", height = "90"/>
+  <div class="container-fluid">
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+  data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+  aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span></button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+  <div class="navbar-nav">
+  <a class="nav-link" href="{% url 'index' %}">Home</a>
+  <a class="nav-link" href="{% url 'planners' %}">Events</a>
+  <a class = "nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+  <a class = "nav-link" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
 
-</div>
-</div>
-</div>
-</nav>
+  </div>
+  </div>
+  </div>
+  </nav>
+
+  <p style="font-size: 28px;">User: {{ user.get_username }}</p>
 
 <!-- add block content from html template -->
 {% block content %}

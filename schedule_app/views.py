@@ -4,12 +4,34 @@ from .models import Planner
 from .forms import PlannerForm
 from django.views import generic
 from django.shortcuts import redirect
+from .forms import UserRegisterForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
+    # Force users to login
+    if not request.user.is_authenticated:
+        return redirect('login') 
+    else:
+        pass
+    
     # Render the HTML template index.html with the data in the context variable.
     planners = Planner.objects.all()
     return render( request, 'schedule_app/index.html', {'planners': planners})
+
+# Allow new users to sign up
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Your account has been created ! You are now able to log in')
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'registration/register.html', {'form': form, 'title':'register here'})
 
 class PlannerListView(generic.ListView):
     model = Planner
@@ -26,7 +48,6 @@ def createPlanner(request):
             planner = form.save()
         
         return redirect("/")
-    
     else:
         form = PlannerForm
         
@@ -46,7 +67,7 @@ def updatePlanner(request, planner_id):
         return redirect('planner-detail', item.id)
     else:
         form = PlannerForm(instance = item)
-        
+    
     context = {'form': form}
     return render(request, 'schedule_app/planner_form.html', context)
 
@@ -59,3 +80,4 @@ def deletePlanner(request, planner_id):
     
     context = {'item': item}
     return render(request, 'schedule_app/planner_delete.html', context)
+
